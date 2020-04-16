@@ -1,0 +1,7 @@
+#Dependencies
+- @hapi/hapi
+- dotenv
+#DevDependencies
+- eslint
+- eslint-config-airbnb-base
+- eslint-plugin-import
