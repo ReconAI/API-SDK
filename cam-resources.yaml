@@ -1,0 +1,11 @@
+resources:
+  - key: "cam1"
+    url: "rtsp://test.com"
+    format: "mp4"
+  - key: "cam2"
+    url: "rtsp://test2.com"
+    format: "mp4"
+  - key: "cam3"
+    url: "rtsp://test3.com"
+    format: "mp4"
+
