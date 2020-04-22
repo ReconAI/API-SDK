@@ -1,5 +1,5 @@
 module.exports = {
-  allStreams: (request) => request.server.methods.getCamResources().resources,
+  allStreams: (request) => request.server.methods.getProxies(),
   getStream: (request, h) => {
     const { logger } = request.server;
     const { streamId } = request.params;
