@@ -5,6 +5,7 @@ const Hapi = require('@hapi/hapi');
 const hapiBoomDecorators = require('hapi-boom-decorators');
 
 const logger = require('./lib/Logger');
+const Live555ProxyServer = require('./lib/Live555ProxyServer');
 const routes = require('./api');
 
 const port = 3000;
@@ -51,9 +52,12 @@ const createServer = async () => {
 
   try {
     const camResources = safeLoad(fs.readFileSync('./cam-resources.yaml', 'utf8'));
-    // Add static camera resources as server methods, for access data in requests
-    server.method('getCamResources', () => camResources, {});
-
+    // Init proxy for cameras
+    const proxy = new Live555ProxyServer({
+      addresses: camResources.resources.map((r) => r.url),
+      binPath: './bin/live555ProxyServer',
+    }, logger);
+    server.method('getProxies', () => proxy.proxiedRTSPs, {});
     // Initiate routes
     routes.forEach((route) => server.route(route));
     await server.start();

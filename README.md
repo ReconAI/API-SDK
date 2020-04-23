@@ -17,3 +17,7 @@ It will use the configuration from `.env` file, you need to create it base on `.
 2. Perform `docker-compose up` to build image and run container
 
 It will use the configuration from `.env` file, you need to create it base on `.env-example`. The default backend host is `http://localhost:3000`.
+
+Using winston logger, it write logs at directory `logs` - 
+`error.log` - with errors and `combined.log` - with errors and info
+also it use console if production mode is not set
