@@ -13,4 +13,4 @@ services:
       - "3000:3000"
     volumes:
       - ${ROOT_PATH}/.env:/usr/src/app/.env
-      - ${ROOT_PATH}/cam-resources.yaml:/usr/src/app/cam-resources.yaml
+      - ${ROOT_PATH}/.cam-resources.yaml:/usr/src/app/.cam-resources.yaml
