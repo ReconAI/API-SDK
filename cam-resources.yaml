@@ -5,4 +5,7 @@ resources:
   - key: "cam2"
     url: "rtsp://46.216.11.140:554"
     format: "mp4"
+  - key: "cam3"
+    url: "rtsp://192.168.10.147:554"
+    format: "mp4"
 
