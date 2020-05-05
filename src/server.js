@@ -51,7 +51,7 @@ const createServer = async () => {
   setExtensions(server);
 
   try {
-    const camResources = safeLoad(fs.readFileSync('./cam-resources.yaml', 'utf8'));
+    const camResources = safeLoad(fs.readFileSync('./.cam-resources.yaml', 'utf8'));
     // Init proxy for cameras
     const proxy = new Live555ProxyServer({
       addresses: camResources.resources.map((r) => r.url),

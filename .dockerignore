@@ -1,5 +1,6 @@
 node_modules
 npm-debug.log
+cam-resources.yaml
 .env-example
 .env
 .cam-resources.yaml
