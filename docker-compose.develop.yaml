@@ -4,7 +4,6 @@ services:
   nodejs:
     image: dockerteamrecon/api-sdk:develop-aarch64
     command: node .
-    image: api-sdk
     container_name: api-sdk
     env_file: .env
     ports:
