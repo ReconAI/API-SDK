@@ -51,7 +51,7 @@ const createServer = async () => {
   try {
     const setupConf = {
       binPath: `${__dirname}/../bin/rtsp-simple-proxy`,
-      confPath: `${__dirname}/../.cam-resources.yml`,
+      confPath: `${__dirname}/../cam-resources.yml`,
     };
     const proxy = new SimpleProxy(setupConf, logger);
     proxy.run();
