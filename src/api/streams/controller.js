@@ -5,7 +5,7 @@ module.exports = {
   allStreams: (request) => {
     const { info } = request;
     console.log(JSON.stringify(info));
-    const camResources = safeLoad(fs.readFileSync(`${__dirname}/../../../.cam-resources.yml`, 'utf8'));
+    const camResources = safeLoad(fs.readFileSync(`${__dirname}/../../../cam-resources.yml`, 'utf8'));
     const { rtspPort } = camResources.server;
     return Object.keys(camResources.streams).map((streamAlias) => `rtsp://${info.remoteAddress}:${rtspPort}/${streamAlias}`);
   },
