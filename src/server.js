@@ -1,11 +1,9 @@
 require('dotenv').config();
-const fs = require('fs');
-const { safeLoad } = require('js-yaml');
 const Hapi = require('@hapi/hapi');
 const hapiBoomDecorators = require('hapi-boom-decorators');
 
 const logger = require('./lib/Logger');
-const Live555ProxyServer = require('./lib/Live555ProxyServer');
+const SimpleProxy = require('./lib/SimpleProxy');
 const routes = require('./api');
 
 const port = 3000;
@@ -51,13 +49,12 @@ const createServer = async () => {
   setExtensions(server);
 
   try {
-    const camResources = safeLoad(fs.readFileSync('./.cam-resources.yaml', 'utf8'));
-    // Init proxy for cameras
-    const proxy = new Live555ProxyServer({
-      addresses: camResources.resources.map((r) => r.url),
-      binPath: './bin/live555ProxyServer',
-    }, logger);
-    server.method('getProxies', () => proxy.proxiedRTSPs, {});
+    const setupConf = {
+      binPath: `${__dirname}/../bin/rtsp-simple-proxy`,
+      confPath: `${__dirname}/../.cam-resources.yml`,
+    };
+    const proxy = new SimpleProxy(setupConf, logger);
+    proxy.run();
     // Initiate routes
     routes.forEach((route) => server.route(route));
     await server.start();
