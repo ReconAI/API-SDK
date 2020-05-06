@@ -5,3 +5,4 @@ cam-resources.yaml
 .env
 .cam-resources.yaml
 bin
+Dockerfile*

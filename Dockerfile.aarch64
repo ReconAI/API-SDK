@@ -1,0 +1,17 @@
+FROM balenalib/aarch64-ubuntu-node:bionic
+
+RUN [ "cross-build-start" ]
+
+WORKDIR /usr/src/app
+
+RUN mkdir -p bin
+
+ADD rtsp-simple-proxy_v0.2.14_linux_arm64.tar.gz ./bin
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY src *.js *.json ./
+
+RUN [ "cross-build-end" ]
