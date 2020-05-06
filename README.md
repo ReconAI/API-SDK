@@ -22,3 +22,5 @@ For code deploying we using docker image from docker hub
 Using winston logger, it write logs at directory `logs` - 
 `error.log` - with errors and `combined.log` - with errors and info
 also it use console if production mode is not set
+
+*NOTE*: Docker container run in Host network with direct ports opened.
