@@ -1,4 +1,0 @@
-resources:
-  - key: "cam1"
-    url: "rtsp://addr.here:554"
-    format: "mp4"

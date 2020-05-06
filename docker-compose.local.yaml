@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  nodejs:
+    build:
+      context: .
+      dockerfile: Dockerfile.aarch64
+    command: node .
+    image: api-sdk
+    container_name: api-sdk
+    env_file: .env
+    ports:
+      - "3000:3000"
+      - "8554:8554"
+      - "8050:8050/udp"
+      - "8051:8051/udp"
+    volumes:
+      - ${ROOT_PATH}/.env:/usr/src/app/.env
+      - ${ROOT_PATH}/conf.yml:/usr/src/app/.conf.yml
