@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 RUN mkdir -p bin
 
-ADD rtsp-simple-proxy_v0.2.14_linux_arm64.tar.gz ./bin
+ADD rtsp-simple-proxy_v0.2.14_linux_arm64.digest.fix.tar.gz ./bin
 
 COPY package*.json ./
 
