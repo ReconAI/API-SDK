@@ -1,6 +1,15 @@
 version: '3'
 
 services:
+  pgsql:
+    image: postgres:12.3-alpine
+    container_name: api-sdk-db
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - ./dumps:/docker-entrypoint-initdb.d
+      - ${ROOT_PATH}/pgsql/data:/var/lib/postgresql/data
+
   nodejs:
     build:
       context: .
