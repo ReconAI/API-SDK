@@ -24,3 +24,19 @@ Using winston logger, it write logs at directory `logs` -
 also it use console if production mode is not set
 
 *NOTE*: Docker container run in Host network with direct ports opened.
+
+##API
+###Cameras
+####Get list of availbale streams
+```shell script
+curl --location --request GET '{{http}}://{{host}}{{:port}}/streams'
+```
+####Get RTSP stream
+```shell script
+curl --location --request GET '{{http}}://{{host}}{{:port}}/streams/{{streamId}}'
+```
+###Files
+####Download assets
+```shell script
+curl --location --request GET '{{http}}://{{host}}{{:port}}/files?filename={{filename_path}}'
+```
