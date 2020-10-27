@@ -103,3 +103,4 @@ dist
 .idea
 .cam-resources.yaml
 .cam-resources.yml
+pgsql

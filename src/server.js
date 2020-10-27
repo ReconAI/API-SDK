@@ -6,7 +6,7 @@ const logger = require('./lib/Logger');
 const SimpleProxy = require('./lib/SimpleProxy');
 const routes = require('./api');
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const setExtensions = (server) => {
   // Insert logger to request

@@ -1,35 +1,48 @@
-const path = require('path');
 const fs = require('fs');
 const mime = require('mime');
-const { dirname } = sails.config.files;
+const _ = require('lodash');
+const { Readable } = require('stream');
 
-module.exports = (req, res) => {
-	let filename = req.param('filename', '').replace(/\/|(%2F)/, '');
+const apiKeyCheck = require('../access/apikey');
 
-	if (_.isUndefined(filename) || _.isNull(filename)) {filename = '';}
+module.exports = [
+	{
+		method: 'GET',
+		path: '/files',
+		config: {
+			description: 'Get all available streams',
+			pre: [
+				{ method: apiKeyCheck },
+			],
+			handler: (request, h) => {
+				const filename = (request.query.filename || '');
 
-	try {
-		let filePath = path.join(`${dirname}/`, filename);
+				if (_.isUndefined(filename) || _.isNull(filename)) {
+					throw h.notFound();
+				}
 
-		if (fs.existsSync(filePath) && fs.lstatSync(filePath).isFile()) {
-			try {
-				var stat = fs.statSync(filePath);
+				try {
+					const filePath = filename;
 
-				res.writeHead(200, {
-					'Content-Type': mime.getType(filePath),
-					'Content-Length': stat.size
-				});
+					if (fs.existsSync(filePath) && fs.lstatSync(filePath).isFile()) {
+						try {
+							const stat = fs.statSync(filePath);
+							const stream = fs.createReadStream(filePath);
+							const streamData = new Readable().wrap(stream);
 
-				var readStream = fs.createReadStream(filePath);
-				// We replaced all the event handlers with a simple call to readStream.pipe()
-				return readStream.pipe(res);
-			} catch (err) {
-				return res.status(501).send(err) && console.error(err);
+							return h.response(streamData)
+								.header('Content-Type', mime.getType(filePath))
+								.header('Content-Length', stat.size);
+						} catch (err) {
+							throw h.badRequest() && console.error(err);
+						}
+					} else {
+						throw h.notFound();
+					}
+				} catch (err) {
+					throw h.badRequest() && console.error(err);
+				}
 			}
-		} else {
-			return res.status(404).send({message: 'File not found!'});
 		}
-	} catch (err) {
-		return res.status(500).send(err) && console.error(err);
 	}
-};
+];
