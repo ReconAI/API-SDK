@@ -22,19 +22,18 @@ class Sync {
 			try {
 				await client.connect();
 
-				return client.query('SELECT * FROM "recon_ai_db"."public"."RelevantData";', [], (err, result) => {
+				return client.query('SELECT * FROM "public"."RelevantData";', [], (err, result) => {
 					if (err) {
 						logger.error('error happened during query', err);
 						return client.end();
 					}
 
-					return axios.post(cloudAPI, result, {
+					return axios.post(cloudAPI, result.rows, {
 						headers: {
 							'X-Api-Sdk-Key': process.env.EDGE_API_KEY,
 						},
 					})
 						.then((res) => {
-							logger.info(res);
 							return client.end();
 						})
 						.catch(err => {

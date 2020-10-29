@@ -6,9 +6,12 @@ services:
     container_name: api-sdk-db
     env_file: .env
     restart: unless-stopped
+    ports:
+      - "5432:5432"
     volumes:
       - ./dumps:/docker-entrypoint-initdb.d
       - ${ROOT_PATH}/pgsql/data:/var/lib/postgresql/data
+    networks: [ 'edge' ]
 
   nodejs:
     image: dockerteamrecon/api-sdk:master-aarch64
@@ -25,3 +28,8 @@ services:
       - ${ROOT_PATH}/.env:/usr/src/app/.env
       - ${ROOT_PATH}/cam-resources.yml:/usr/src/app/.cam-resources.yml
     restart: always
+    depends_on:
+       - pgsql
+    networks: [ 'edge' ]
+
+networks: { edge: { } }
