@@ -1,28 +1,31 @@
-const pg = require('pg');
 const axios = require('axios');
+const {Client} = require('pg');
 const logger = require('./Logger');
+
+const pgHost = process.env.EDGE_DB;
+const pgDatabase = process.env.POSTGRES_DB;
+const pgUser = process.env.POSTGRES_USER;
+const pgPassword = process.env.POSTGRES_PASSWORD;
+const syncInterval = process.env.SYNC_INTERVAL;
+
+const connectionString = `postgres://${pgUser}:${pgPassword}@${pgHost}/${pgDatabase}`;
 
 class Sync {
 	constructor() {
 		const cloudAPI = `${process.env.CLOUD_PORTAL_URL}/relevant-data/import`;
 
-		const pgHost = process.env.EDGE_DB;
-		const pgDatabase = process.env.POSTGRES_DB;
-		const pgUser = process.env.POSTGRES_USER;
-		const pgPassword = process.env.POSTGRES_PASSWORD;
-		const syncInterval = process.env.SYNC_INTERVAL;
+		this.interval = setInterval(async () => {
+			const client = new Client({
+				connectionString,
+			});
 
-		const pgUri = `postgres://${pgUser}:${pgPassword}@${pgHost}/${pgDatabase}`;
+			try {
+				await client.connect();
 
-		this.interval = setInterval(() => {
-			pg.connect(pgUri, (err, client, done) => {
-				if (err) {
-					return logger.error('error fetching client from pool', err);
-				}
-
-				return client.query('SELECT * FROM `public`.`RelevantData` WHERE 1=1', [], (err, result) => {
+				return client.query('SELECT * FROM "recon_ai_db"."public"."RelevantData";', [], (err, result) => {
 					if (err) {
-						return logger.error('error happened during query', err);
+						logger.error('error happened during query', err);
+						return client.end();
 					}
 
 					return axios.post(cloudAPI, result, {
@@ -32,14 +35,17 @@ class Sync {
 					})
 						.then((res) => {
 							logger.info(res);
-
-							return done();
+							return client.end();
 						})
 						.catch(err => {
-							return logger.error('error happened axios request', err);
+							logger.error('error happened axios request', err);
+							return client.end();
 						});
 				});
-			});
+			} catch (err) {
+				logger.error('error fetching client from pool', err);
+				return client.end();
+			}
 		}, syncInterval * 1000);
 	}
 }
