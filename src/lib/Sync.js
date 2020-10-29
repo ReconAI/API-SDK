@@ -20,12 +20,16 @@ class Sync {
 					return logger.error('error fetching client from pool', err);
 				}
 
-				return client.query('SELECT * FROM `public`.``', [], (err, result) => {
+				return client.query('SELECT * FROM `public`.`RelevantData` WHERE 1=1', [], (err, result) => {
 					if (err) {
 						return logger.error('error happened during query', err);
 					}
 
-					return axios.post(cloudAPI, result)
+					return axios.post(cloudAPI, result, {
+						headers: {
+							'X-Api-Sdk-Key': process.env.EDGE_API_KEY,
+						},
+					})
 						.then((res) => {
 							logger.info(res);
 
