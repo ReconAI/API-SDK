@@ -27,9 +27,9 @@ also it use console if production mode is not set
 
 ##API
 ###Cameras
-####Get list of availbale streams
+####Get list of available streams
 ```shell script
-curl --location --request GET '{{http}}://{{host}}{{:port}}/streams'
+curl --location --request GET '{{http}}://{{host}}{{:port}}/streams' --header 'X-Api-Sdk-Key: {{X-Api-Sdk-Key}}'
 ```
 ####Get RTSP stream
 ```shell script
@@ -38,5 +38,5 @@ curl --location --request GET '{{http}}://{{host}}{{:port}}/streams/{{streamId}}
 ###Files
 ####Download assets
 ```shell script
-curl --location --request GET '{{http}}://{{host}}{{:port}}/files?filename={{filename_path}}'
+curl --location --request GET '{{http}}://{{host}}{{:port}}/files?filename={{filename_path}}' --header 'X-Api-Sdk-Key: {{X-Api-Sdk-Key}}'
 ```

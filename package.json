@@ -19,11 +19,14 @@
   "dependencies": {
     "@hapi/hapi": "^19.1.1",
     "@hapi/joi": "^17.1.1",
+    "axios": "^0.21.0",
+    "cron": "^1.8.2",
     "dotenv": "^8.2.0",
     "hapi-boom-decorators": "^4.1.2",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.20",
     "mime": "^2.4.6",
+    "pg": "^8.4.2",
     "winston": "^3.2.1"
   },
   "devDependencies": {

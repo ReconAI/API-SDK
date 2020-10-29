@@ -1,4 +1,9 @@
+const logger = require('./src/lib/Logger');
+
 const createServer = require('./src/server');
+const syncService = require('./src/lib/Sync');
+
+logger.info('SYNC INTERVAL id:', syncService.interval);
 
 createServer();
 
